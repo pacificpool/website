@@ -28,9 +28,9 @@ const Facilities = () => {
   const facilities = [
     {
       title: "Olympic Pool",
-      description: "Our crown jewel - a 50m Olympic-standard swimming pool with 10 lanes and adjustable depth technology. Maintained at a perfect 28°C year-round with state-of-the-art filtration systems for the ultimate swimming experience.",
+      description: "Our crown jewel - a 25m Olympic-standard swimming pool with 10 lanes and adjustable depth technology. Maintained at a perfect 28°C year-round with state-of-the-art filtration systems for the ultimate swimming experience.",
       features: [
-        "50m length with competition-grade starting blocks",
+        "25m length with competition-grade starting blocks",
         "Advanced underwater lighting system",
         "Electronic timing equipment",
         "Spectator seating for 200 people"

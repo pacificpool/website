@@ -202,10 +202,10 @@ const Contact = () => {
                       <h4 className="text-white font-medium mb-1">Contact</h4>
                       <p className="text-white/70 mb-1">
                         <a
-                          href="tel:+91999999999"
+                          href="tel:+919008838001"
                           className="hover:text-white transition-colors duration-300"
                         >
-                          +91 999999999
+                          +91 9008838001
                         </a>
                       </p>
                       <p className="text-white/70">
@@ -238,10 +238,7 @@ const Contact = () => {
                     <div>
                       <h4 className="text-white font-medium mb-1">Hours</h4>
                       <p className="text-white/70 mb-1">
-                        Monday - Friday: 6:00 AM - 10:00 PM
-                      </p>
-                      <p className="text-white/70">
-                        Weekends: 7:00 AM - 9:00 PM
+                        Monday - Sunday: 5:00 AM - 11:00 PM
                       </p>
                     </div>
                   </div>

@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import pacificPoolLogo from '../assets/modals/pp.png'
+import BookingModal from '../components/BookingModal'
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   
   // Navigation links
   const navLinks = [
@@ -29,21 +32,29 @@ const Navbar = () => {
   }, [])
   
   return (
+    <>
     <motion.header 
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
         isScrolled ? 'bg-neutral-950/90 backdrop-blur-md py-3 shadow-lg' : 'bg-transparent py-6'
       }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      transition={{ duration: 0.5, delay: 2.6 }}
+      transition={{ duration: 0.5, delay: 0.5 }}
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
         {/* Logo */}
         <a href="#home" className="flex items-center">
-          <div className="relative">
-            <div className="text-white font-bold text-xl">
-              PACIFIC <span className="text-sky-400">POOL</span>
-            </div>
+          <motion.div 
+            className="relative"
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.2 }}
+          >
+            {/* Logo Image */}
+            <img 
+              src={pacificPoolLogo} 
+              alt="Pacific Pool" 
+              className="h-10 md:h-12" 
+            />
             
             {/* Water-like underline animation */}
             <motion.div 
@@ -58,7 +69,7 @@ const Navbar = () => {
                 ease: "easeInOut"
               }}
             />
-          </div>
+          </motion.div>
         </a>
         
         {/* Desktop Navigation */}
@@ -79,13 +90,18 @@ const Navbar = () => {
         
         {/* CTA Button */}
         <div className="hidden md:block">
-          <button className={`px-4 py-2 rounded-full text-sm font-bold transition-all duration-300 ${
-            isScrolled 
-              ? 'bg-sky-400 text-neutral-900 hover:bg-sky-300' 
-              : 'bg-white/10 backdrop-blur-sm text-white border border-white/30 hover:bg-white/20'
-          }`}>
+          <motion.button 
+            className={`px-5 py-2 rounded-full text-sm font-bold transition-all duration-300 ${
+              isScrolled 
+                ? 'bg-sky-400 text-neutral-900 hover:bg-sky-300' 
+                : 'bg-white/10 backdrop-blur-sm text-white border border-white/30 hover:bg-white/20'
+            }`}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setIsModalOpen(true)}
+          >
             Book a Session
-          </button>
+          </motion.button>
         </div>
         
         {/* Mobile Menu Button */}
@@ -138,6 +154,11 @@ const Navbar = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: navLinks.length * 0.1 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setIsModalOpen(true);
+                }}
               >
                 Book a Session
               </motion.button>
@@ -174,6 +195,14 @@ const Navbar = () => {
         </>
       )}
     </motion.header>
+    
+    {/* Booking Modal */}
+    <BookingModal 
+      isOpen={isModalOpen}
+      onClose={() => setIsModalOpen(false)}
+      onSubmit={(data) => console.log("Form submitted:", data)}
+    />
+    </>
   )
 }
 
