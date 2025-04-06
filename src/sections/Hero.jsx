@@ -10,6 +10,16 @@ const Hero = () => {
   const videoRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activePhoneNumber, setActivePhoneNumber] = useState(0);
+  const phoneNumbers = ["9008838001", "9008894001"];
+
+  // Cycle through phone numbers with animation - 5 second interval
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActivePhoneNumber((prev) => (prev === 0 ? 1 : 0));
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,6 +33,10 @@ const Hero = () => {
   const openWhatsApp = () => {
     // Replace with your WhatsApp number
     window.open("https://wa.me/919008838001", "_blank");
+  };
+
+  const callPhone = () => {
+    window.open(`tel:+91${phoneNumbers[activePhoneNumber]}`, "_blank");
   };
 
   const fadeInUp = {
@@ -73,6 +87,13 @@ const Hero = () => {
       transition: { duration: 0.3 },
     },
     tap: { scale: 0.98 },
+  };
+
+  const numberSwitchVariants = {
+    initial: { y: 20, opacity: 0 },
+    animate: { y: 0, opacity: 1 },
+    exit: { y: -20, opacity: 0 },
+    transition: { duration: 0.5 }
   };
 
   return (
@@ -189,6 +210,33 @@ const Hero = () => {
         />
       </motion.button>
 
+      {/* Call floating button */}
+      <motion.button
+        className="fixed bottom-8 left-8 z-50 w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center shadow-lg"
+        whileHover={{ scale: 1.1, boxShadow: "0 8px 25px rgba(0, 0, 0, 0.3)" }}
+        whileTap={{ scale: 0.95 }}
+        onClick={callPhone}
+      >
+        <svg width="28" height="28" fill="white" viewBox="0 0 24 24">
+          <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z" />
+        </svg>
+
+        {/* Ripple effect */}
+        <motion.div
+          className="absolute inset-0 rounded-full bg-blue-500"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.7, 0, 0.7],
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          style={{ zIndex: -1 }}
+        />
+      </motion.button>
+
       {/* Hero content */}
       <div className="relative z-20 h-full w-full flex items-center">
         <div className="container mx-auto px-4 md:px-10 lg:px-20">
@@ -229,6 +277,47 @@ const Hero = () => {
               </span>
             </motion.h1>
 
+            {/* Animated Phone Number Display */}
+            <motion.div
+              variants={fadeInUp}
+              className="mb-6 mt-2 bg-gradient-to-r from-blue-600/40 to-blue-400/40 backdrop-blur-sm px-6 py-3 rounded-xl border border-blue-400/30 inline-flex items-center cursor-pointer hover:bg-blue-500/30 transition-colors"
+              onClick={() => window.open(`tel:+91${phoneNumbers[activePhoneNumber]}`, "_blank")}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <div className="mr-3 bg-blue-500 text-white p-2 rounded-full">
+                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-white text-sm">Call us now</span>
+                <div className="h-8 overflow-hidden w-48">
+                  <motion.div
+                    animate={{
+                      y: activePhoneNumber === 0 ? 0 : -32,
+                    }}
+                    transition={{
+                      duration: 0.5,
+                      ease: "easeInOut"
+                    }}
+                    className="flex flex-col"
+                  >
+                    <div className="h-8 flex items-center">
+                      <span className="text-xl font-bold bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent">
+                        +91 90088 38001
+                      </span>
+                    </div>
+                    <div className="h-8 flex items-center">
+                      <span className="text-xl font-bold bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent">
+                        +91 90088 94001
+                      </span>
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
+            </motion.div>
+
             <motion.div
               className="relative mb-8 pl-4 border-l-4 border-blue-400/50"
               variants={fadeInUp}
@@ -267,6 +356,19 @@ const Hero = () => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
+                </svg>
+              </motion.button>
+
+              <motion.button
+                variants={buttonVariants}
+                whileHover="hover"
+                whileTap="tap"
+                onClick={callPhone}
+                className="px-8 py-4 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-medium rounded-full shadow-lg flex items-center"
+              >
+                <span className="mr-2">Call Us</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                  <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z" />
                 </svg>
               </motion.button>
 
@@ -320,7 +422,6 @@ const Hero = () => {
               {[
                 { label: "Professional Trainers", value: "10+" },
                 { label: "Satisfied Swimmers", value: "2000+" },
-
               ].map((stat, index) => (
                 <div key={index} className="flex flex-col">
                   <span className="text-3xl font-bold text-sky-400">{stat.value}</span>
